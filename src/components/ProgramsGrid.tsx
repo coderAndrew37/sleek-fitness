@@ -3,7 +3,21 @@ import leanfitImage from "../assets/leanfit.jpg";
 import strongherImage from "../assets/strongher.jpg";
 import quickfitImage from "../assets/quickfit.jpg";
 
-const programs = [
+interface Program {
+  title: string;
+  description: string;
+  price: string;
+  duration: string;
+  image?: string;
+  cta: {
+    label: string;
+    href: string;
+  };
+  popular?: boolean;
+}
+
+// Corrected typing with parentheses
+const basePrograms: (Omit<Program, "cta"> & { cta: { label: string } })[] = [
   {
     title: "LeanFit 8-Week Program",
     description:
@@ -11,7 +25,7 @@ const programs = [
     price: "5,999",
     duration: "8 weeks",
     image: leanfitImage,
-    cta: { label: "Join Now", href: "/join/leanfit" },
+    cta: { label: "Join Now" },
     popular: true,
   },
   {
@@ -21,7 +35,7 @@ const programs = [
     price: "7,999",
     duration: "12 weeks",
     image: strongherImage,
-    cta: { label: "Start Today", href: "/join/strongher" },
+    cta: { label: "Start Today" },
   },
   {
     title: "QuickFit Challenge",
@@ -30,9 +44,20 @@ const programs = [
     price: "2,999",
     duration: "30 days",
     image: quickfitImage,
-    cta: { label: "Get Started", href: "/join/quickfit" },
+    cta: { label: "Get Started" },
   },
 ];
+
+// Add hrefs using program title
+const programs: Program[] = basePrograms.map((program) => ({
+  ...program,
+  cta: {
+    label: program.cta.label,
+    href: `https://wa.me/254722558572?text=Hi%20Lucy,%20I'm%20interested%20in%20the%20${encodeURIComponent(
+      program.title
+    )}%20program.`,
+  },
+}));
 
 const ProgramsGrid = () => {
   return (
